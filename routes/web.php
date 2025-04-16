@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\WeatherController;
@@ -10,9 +11,7 @@ use App\Http\Controllers\WeatherController;
 
 Route::get('/dd', [CityController::class, 'dd']);
 
-Route::get('/', function(){
-    return view('home');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 //route for ajax
 Route::get('/city-search', [CityController::class, 'searchCities'])->name('city-search');
