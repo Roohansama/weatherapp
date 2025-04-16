@@ -45,17 +45,21 @@
     <!-- Current Weather -->
     <section class="row mb-5">
         <div class="col-lg-6 mb-4">
-            <h2 class="h5">London, GB</h2>
-            <div class="display-3 fw-bold">18°C</div>
-            <p>Feels like 17°C. Broken clouds. Gentle Breeze</p>
-            <ul class="list-unstyled text-muted">
-                <li>Wind: 4.0m/s SE</li>
-                <li>Pressure: 1007hPa</li>
-                <li>Humidity: 54%</li>
-                <li>UV: 4</li>
-                <li>Dew point: 9°C</li>
-                <li>Visibility: 10.0km</li>
-            </ul>
+            @if(isset($weather_data))
+            <h2 class="h5 fw-bold">{{strtoupper($weather_data['city'].' ,'.$weather_data['sys']['country'])}}</h2>
+            <div class="display-5 fw-bold">
+                                               {{round($weather_data['main']['temp']) }}c
+                    <p>Feels like {{round($weather_data['main']['feels_like'])}}°C. {{$weather_data['weather'][0]['description']}}</p>
+
+                    <p> {{getWindCategory($weather_data['wind']['speed'])}}</p>
+                    <ul class="list-unstyled text-muted">
+                        <li>Wind: {{$weather_data['wind']['speed']}} {{wind_direction($weather_data['wind']['deg'])}}</li>
+                        <li>Pressure: {{$weather_data['main']['pressure']}}hPa</li>
+                        <li>Humidity:  {{$weather_data['main']['humidity']}}%</li>
+                        <li>Visibility:  {{Number::abbreviate($weather_data['visibility'])}}m</li>
+                    </ul>
+            @endif</div>
+
         </div>
         <div class="col-lg-6">
             <img src="" alt="Map" class="img-fluid rounded shadow">

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Http;
 
 class WeatherController extends Controller
 {
+
+    public $city;
     public function getWeather(Request $request){
         try{
             $geocode = $this->getGeoCoordinates($request->city);
@@ -20,17 +22,13 @@ class WeatherController extends Controller
             ]);
 
 
-            $data = $response->json();
-            dd($data);
+            $weather_data = $response->json();
 
-            if (!empty($data)) {
-                $lat = $data[0]['lat'];
-                $lon = $data[0]['lon'];
+            $weather_data['city'] = $this->city;
 
-                return ([
-                    'latitude' => $lat,
-                    'longitude' => $lon
-                ]);
+
+            if (!empty($weather_data)) {
+                return redirect()->to('/')->with('weather_data', $weather_data);
             }
 
             return response()->json(['error' => 'City not found'], 404);
@@ -44,17 +42,19 @@ class WeatherController extends Controller
     {
         try{
           $seperatedArray = explode('-', $city);
-          $city = $seperatedArray[0];
+          $this->city = $seperatedArray[0];
           $country = $seperatedArray[1];
 
-          $query = $city.','.$country;
+          $query = $this->city.','.$country;
             $response = Http::get('http://api.openweathermap.org/geo/1.0/direct', [
                 'q' => $query,
-                'limit' => 1,
+                'limit' => 5,
                 'appid' => env('OPENWEATHERMAP_API_KEY')
             ]);
 
             $data = $response->json();
+
+//            dd($data);
 
 
             if (!empty($data)) {

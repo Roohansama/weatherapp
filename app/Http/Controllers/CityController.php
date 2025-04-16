@@ -13,7 +13,7 @@ class CityController extends Controller
 
             $json = Storage::get('city.list.json');
 
-            return $cities = json_decode($json,true);
+            return json_decode($json,true);
 
         }catch(\Exception $e){
             return redirect()->to('/')->with('error', $e->getMessage());
