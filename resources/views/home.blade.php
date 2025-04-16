@@ -51,9 +51,9 @@
                                                {{round($weather_data['main']['temp']) }}c
                     <p>Feels like {{round($weather_data['main']['feels_like'])}}°C. {{$weather_data['weather'][0]['description']}}</p>
 
-                    <p> Gentle Breeze</p>
+                    <p> {{getWindCategory($weather_data['wind']['speed'])}}</p>
                     <ul class="list-unstyled text-muted">
-                        <li>Wind: {{$weather_data['wind']['speed']}} SE</li>
+                        <li>Wind: {{$weather_data['wind']['speed']}} {{wind_direction($weather_data['wind']['deg'])}}</li>
                         <li>Pressure: {{$weather_data['main']['pressure']}}hPa</li>
                         <li>Humidity:  {{$weather_data['main']['humidity']}}%</li>
                         <li>Visibility:  {{Number::abbreviate($weather_data['visibility'])}}m</li>
