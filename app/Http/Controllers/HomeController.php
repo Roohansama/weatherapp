@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
+use App\Http\Controllers\WeatherController;
 
 class HomeController extends Controller
 {
-    public function index(Request $request){
-
+    public function index(){
         if(session()->has('weather_data')){
-            $weather_data = session('weather_data');
 
-            // 🧠 Now you can process $weatherData
-            // e.g. transform, log, enrich, etc.
+            $weather_data = session('weather_data');
 
             return view('home', compact('weather_data'));
         }

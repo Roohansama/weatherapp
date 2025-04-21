@@ -28,3 +28,31 @@ if (!function_exists('getWindCategory')) {
         };
     }
 }
+
+if(!function_exists('getAqiFromPm10')){
+    function getAqiFromPm10($pm10){
+
+        $breakpoints =[
+            ['Clow' => 0,   'Chigh' => 54,  'Ilow' => 0,   'Ihigh' => 50],
+            ['Clow' => 55,  'Chigh' => 154, 'Ilow' => 51,  'Ihigh' => 100],
+            ['Clow' => 155, 'Chigh' => 254, 'Ilow' => 101, 'Ihigh' => 150],
+            ['Clow' => 255, 'Chigh' => 354, 'Ilow' => 151, 'Ihigh' => 200],
+            ['Clow' => 355, 'Chigh' => 424, 'Ilow' => 201, 'Ihigh' => 300],
+            ['Clow' => 425, 'Chigh' => 504, 'Ilow' => 301, 'Ihigh' => 400],
+            ['Clow' => 505, 'Chigh' => 604, 'Ilow' => 401, 'Ihigh' => 500],
+        ];
+
+
+        foreach ($breakpoints as $bp) {
+            if ($pm10 >= $bp['Clow'] && $pm10 <= $bp['Chigh']) {
+                // AQI formula with pm10 value
+                $aqi = (($bp['Ihigh'] - $bp['Ilow']) / ($bp['Chigh'] - $bp['Clow']))
+                    * ($pm10 - $bp['Clow']) + $bp['Ilow'];
+                return round($aqi);
+            }
+        }
+
+        return null;
+
+    }
+}

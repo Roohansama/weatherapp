@@ -14,6 +14,8 @@ class WeatherController extends Controller
             $geocode = $this->getGeoCoordinates($request->city);
 
 
+            $aqi = $this->getAirPollutionData($geocode);
+
             $response = Http::get('https://api.openweathermap.org/data/2.5/weather', [
                 'lat' => $geocode['latitude'],
                 'lon' => $geocode['longitude'],
@@ -21,14 +23,15 @@ class WeatherController extends Controller
                 'appid' => env('OPENWEATHERMAP_API_KEY')
             ]);
 
-
             $weather_data = $response->json();
 
             $weather_data['city'] = $this->city;
 
-
             if (!empty($weather_data)) {
-                return redirect()->to('/')->with('weather_data', $weather_data);
+                return redirect()->to('/')->with([
+                    'weather_data' => $weather_data,
+                    'aqi' => $aqi,
+                ]);
             }
 
             return response()->json(['error' => 'City not found'], 404);
@@ -54,9 +57,6 @@ class WeatherController extends Controller
 
             $data = $response->json();
 
-//            dd($data);
-
-
             if (!empty($data)) {
                 $lat = $data[0]['lat'];
                 $lon = $data[0]['lon'];
@@ -73,5 +73,18 @@ class WeatherController extends Controller
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
 
+    }
+
+    public function getAirPollutionData($geocode){
+        try{
+          return $response = Http::get('http://api.airvisual.com/v2/nearest_city',[
+                'lat' => $geocode['latitude'],
+                'lon' => $geocode['longitude'],
+                'key' => env('IQAIR_API_KEY')
+            ])->json();
+
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 }
