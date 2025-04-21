@@ -9,10 +9,18 @@ class WeatherController extends Controller
 {
 
     public $city;
-    public function getWeather(Request $request){
+    public function getWeather(){
         try{
-            $geocode = $this->getGeoCoordinates($request->city);
+//            $geocode = $this->getGeoCoordinates($request->city);
+            $geocode = $this->getGeoCoordinates('boston-us');
 
+            $air_pollution = $this->getAirPollutionData($geocode);
+
+
+            $aqi = getAqiFromPm10($air_pollution['list'][0]['components']['pm10']);
+
+//            dd($air_pollution['list'][0]['components']);
+//            dd($aqi);
 
             $response = Http::get('https://api.openweathermap.org/data/2.5/weather', [
                 'lat' => $geocode['latitude'],
@@ -54,9 +62,6 @@ class WeatherController extends Controller
 
             $data = $response->json();
 
-//            dd($data);
-
-
             if (!empty($data)) {
                 $lat = $data[0]['lat'];
                 $lon = $data[0]['lon'];
@@ -73,5 +78,20 @@ class WeatherController extends Controller
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
 
+    }
+
+    public function getAirPollutionData($geocode){
+        try{
+            return $response = Http::get('http://api.openweathermap.org/data/2.5/air_pollution',[
+                'lat' => $geocode['latitude'],
+                'lon' => $geocode['longitude'],
+                'appid' => env('OPENWEATHERMAP_API_KEY')
+            ]);
+
+
+//            dd($response->json());
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 }

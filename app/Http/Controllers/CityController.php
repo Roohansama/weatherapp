@@ -45,20 +45,4 @@ class CityController extends Controller
         }
     }
 
-    public function dd(){
-        $cities = $this->fetchCities();
-
-        $q = 'kharian';
-        $results = collect($cities)
-            ->filter(function($city) use ($q) {
-                return str_contains(strtolower($city['name']), $q);
-            })->take(20)
-            ->map(fn($city) => [
-                'text' => $city['name'],
-                'id' => $city['id'],
-            ])
-        ->first();
-
-        dd($results);
-    }
 }
