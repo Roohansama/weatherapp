@@ -9,18 +9,12 @@ class WeatherController extends Controller
 {
 
     public $city;
-    public function getWeather(){
+    public function getWeather(Request $request){
         try{
-//            $geocode = $this->getGeoCoordinates($request->city);
-            $geocode = $this->getGeoCoordinates('boston-us');
-
-            $air_pollution = $this->getAirPollutionData($geocode);
+            $geocode = $this->getGeoCoordinates($request->city);
 
 
-            $aqi = getAqiFromPm10($air_pollution['list'][0]['components']['pm10']);
-
-//            dd($air_pollution['list'][0]['components']);
-//            dd($aqi);
+            $aqi = $this->getAirPollutionData($geocode);
 
             $response = Http::get('https://api.openweathermap.org/data/2.5/weather', [
                 'lat' => $geocode['latitude'],
@@ -29,14 +23,15 @@ class WeatherController extends Controller
                 'appid' => env('OPENWEATHERMAP_API_KEY')
             ]);
 
-
             $weather_data = $response->json();
 
             $weather_data['city'] = $this->city;
 
-
             if (!empty($weather_data)) {
-                return redirect()->to('/')->with('weather_data', $weather_data);
+                return redirect()->to('/')->with([
+                    'weather_data' => $weather_data,
+                    'aqi' => $aqi,
+                ]);
             }
 
             return response()->json(['error' => 'City not found'], 404);
@@ -82,14 +77,12 @@ class WeatherController extends Controller
 
     public function getAirPollutionData($geocode){
         try{
-            return $response = Http::get('http://api.openweathermap.org/data/2.5/air_pollution',[
+          return $response = Http::get('http://api.airvisual.com/v2/nearest_city',[
                 'lat' => $geocode['latitude'],
                 'lon' => $geocode['longitude'],
-                'appid' => env('OPENWEATHERMAP_API_KEY')
-            ]);
+                'key' => env('IQAIR_API_KEY')
+            ])->json();
 
-
-//            dd($response->json());
         }catch (\Exception $e){
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
