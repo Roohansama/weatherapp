@@ -18,4 +18,8 @@ class HomeController extends Controller
 
         return view('home');
     }
+
+    public function renderMap(){
+        return view('layouts.map');
+    }
 }
