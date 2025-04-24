@@ -1,15 +1,46 @@
 body {
-    background: linear-gradient(
-        to bottom,
-        #87ceeb,  /* light sky blue */
-        #00bfff   /* deep sky blue */
-    );
     margin: 0;
     padding: 0;
     height: 100vh;
-    background-repeat: no-repeat;
+    background-image: url("../images/cropped-mountain-range-sunset-landscape-cloudy-sky-mountain-peaks-3840x2160-4620(1).jpg");
+
+    /*background: linear-gradient(*/
+    /*    to bottom,*/
+    /*    #87ceeb, !* light sky blue *! #00bfff !* deep sky blue *!*/
+    /*) no-repeat;*/
     overflow: hidden;
 }
+
+.small-header{
+    background: #0a0a0a;
+    min-height: 35px;
+}
+
+.header{
+    background: transparent;
+}
+
+.footer{
+    background: #0a0a0a;
+    min-height: 40px;
+}
+
+.home-top{
+    min-height: 42vh;
+
+
+}
+
+.home-bottom{
+    min-height: 46vh;
+    padding-top: 2vh;
+}
+
+#map{
+    height: 300px; width: 100%;
+}
+.layer-toggle { margin: 10px 0; }
+
 
 /* Weather Card Styling (Glassmorphism) */
 .card {
@@ -35,18 +66,3 @@ body {
     /*text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.4); !* light glow *!*/
 }
 
-/* Optional button or accent color */
-.button {
-    background-color: #3498db; /* Calm blue */
-    border: none;
-    border-radius: 8px;
-    padding: 10px 15px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.button:hover {
-    background-color: #2980b9;
-}

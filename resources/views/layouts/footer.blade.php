@@ -1,4 +1,4 @@
 <!-- Footer -->
-<footer class="bg-dark text-center py-3 text-muted">
+<footer class="footer bg-dark text-center text-muted ">
     &copy; 2025 WeatherNow. All rights reserved.
 </footer>

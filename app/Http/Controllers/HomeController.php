@@ -8,18 +8,19 @@ use App\Http\Controllers\WeatherController;
 
 class HomeController extends Controller
 {
-    public function index(){
+    public function weather(){
         if(session()->has('weather_data')){
 
             $weather_data = session('weather_data');
 
-            return view('home', compact('weather_data'));
+            return view('weather', compact('weather_data'));
         }
 
+        return view('weather');
+    }
+
+    public function index(){
         return view('home');
     }
 
-    public function renderMap(){
-        return view('layouts.map');
-    }
 }

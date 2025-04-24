@@ -28,7 +28,7 @@ class WeatherController extends Controller
             $weather_data['city'] = $this->city;
 
             if (!empty($weather_data)) {
-                return redirect()->to('/')->with([
+                return redirect()->to('/weather')->with([
                     'weather_data' => $weather_data,
                     'aqi' => $aqi,
                 ]);
