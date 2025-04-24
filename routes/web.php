@@ -9,13 +9,12 @@ use App\Http\Controllers\WeatherController;
 //    return view('welcome');
 //});
 
-Route::get('/dd', [CityController::class, 'dd']);
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/map', [HomeController::class, 'renderMap'])->name('map');
 
 //route for ajax
 Route::get('/city-search', [CityController::class, 'searchCities'])->name('city-search');
 
 //routes for weather
 Route::post('/weather-search', [WeatherController::class, 'getWeather'])->name('weather-search');
+Route::get('/weather', [HomeController::class, 'weather'])->name('weather');

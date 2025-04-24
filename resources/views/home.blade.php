@@ -1,128 +1,14 @@
 @extends('layouts.master')
 @section('content')
+<main>
+    <div class="home-top d-flex justify-content-center">
+        <div class="row">
+            @include('city-search')
 
-<!-- Main Content -->
-<main class="container my-5">
-
-    <div class="d-flex">
-        <form action="{{route('weather-search')}}" method="post">
-            @csrf
-            <label for="city-dropdown" class="mx-3">Select a city</label>
-            <select name="city" id="city-dropdown" style="width: 300px;">
-
-            </select>
-            <button type="submit" class="btn btn-small btn-success">
-                Search
-            </button>
-        </form>
+        </div>
     </div>
-    <!-- Current Weather -->
-    <section class="row mb-3">
-        <div class="col-6 my-5">
-            @if(isset($weather_data))
-            <div class="card text-white">
-                <div class="card-body">
-
-                    <h2 class="card-text h6 ">{{ strtoupper($weather_data['city'] . ' ,' . $weather_data['sys']['country']) }}</h2>
-                    <h2 class="card-title fw-bold">{{ round($weather_data['main']['temp']) }}°C</h2>
-                    <p class="card-text ">Feels like {{ round($weather_data['main']['feels_like']) }}°C. {{$weather_data['weather'][0]['description']}}</p>
-                    <p class="card-text ">{{ getWindCategory($weather_data['wind']['speed']) }}</p>
-                    <p class="card-text fw-bold"> AQI
-                        {{ session('aqi')['data']['current']['pollution']['aqius'] ?? 'N/A' }}
-                    </p>
-                    <ul class="list-unstyled ">
-                        <li>Wind: {{$weather_data['wind']['speed']}} {{ wind_direction($weather_data['wind']['deg']) }}</li>
-                        <li>Pressure: {{$weather_data['main']['pressure']}} hPa</li>
-                        <li>Humidity: {{$weather_data['main']['humidity']}}%</li>
-                        <li>Visibility: {{ Number::abbreviate($weather_data['visibility']) }}m</li>
-                    </ul>
-                </div>
-            </div>
-            @endif
-        </div>
-        <div class="col-lg-6">
-            <div class="card bg-dark text-white">
-                <h2>Weather Map</h2>
-
-                <div class="layer-toggle">
-                    <select id="layerSelect">
-                        <option value="temp_new">Temperature</option>
-                        <option value="clouds_new">Clouds</option>
-                        <option value="precipitation_new">Precipitation</option>
-                        <option value="wind_new">Wind</option>
-                        <option value="pressure_new">Pressure</option>
-                    </select>
-                </div>
-
-                <div id="map"></div>
-
-            </div>
-        </div>
-    </section>
-
+    <div class="home-bottom bg-dark d-flex justify-content-center">
+        @include('weather-map')
+    </div>
 </main>
-@php
-    $coordinates = session('aqi')['data']['location']['coordinates'] ?? [73.0479, 33.6844];
-    if (!empty(session('aqi')['data']['location']['coordinates'])){
-       $zoom = 8;
-    }else{
-        $zoom = 1;
-    }
-@endphp
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-    const apiKey = "{{ env('OPENWEATHERMAP_API_KEY') }}";
-    const lat = {{ $coordinates[1] ?? 'N/A' }};
-    const lon = {{ $coordinates[0] ?? 'N/A' }};
-    const zoom = {{ $zoom }};
-
-    const map = L.map('map').setView([lat, lon], zoom); // Default to Islamabad
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19
-    }).addTo(map);
-
-    let weatherLayer = L.tileLayer(`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${apiKey}`, {
-        opacity: 1
-    }).addTo(map);
-
-    const layerSelect = document.getElementById('layerSelect');
-
-    layerSelect.addEventListener('change', function () {
-        map.removeLayer(weatherLayer);
-        const selectedLayer = this.value;
-
-        weatherLayer = L.tileLayer(`https://tile.openweathermap.org/map/${selectedLayer}/{z}/{x}/{y}.png?appid=${apiKey}`, {
-            opacity: 1
-        }).addTo(map);
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
-<script>
-    $(document).ready(function (){
-        $('#city-dropdown').select2({
-            placeholder: 'Type to search for a city...',
-            ajax: {
-                url: "{{route('city-search')}}",
-                dataType: 'json',
-                delay: 250,
-                data: function (params){
-                    return { q: params.term };
-                },
-                processResults: function (data){
-                    return{ results: data.results };
-                },
-
-                cache: false
-            },
-            minimumInputLength: 2
-        });
-    });
-</script>
-
 @endsection
-

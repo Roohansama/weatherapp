@@ -1,7 +1,7 @@
 
 <!-- Header -->
-<header class="bg-dark text-white p-3 d-flex justify-content-between align-items-center">
-    <h1 class="h4 mb-0">WeatherNow</h1>
-
-    <small>Apr 12, 11:55am</small>
+<header class="header text-white" style="{{ request()->is('weather*') ? 'background-color: #17191a !important;' : '' }}">
+    <div class="small-header text-white"></div>
+        <h1 class="h4 mb-0 fw-bold" style="padding-left: 20%; padding-top: 10px">WeatherNow</h1>
 </header>
+
