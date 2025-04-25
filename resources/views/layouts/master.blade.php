@@ -8,6 +8,21 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="{{asset('css/home.css')}}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <style>
+        @if(request()->is('/'))
+            body{
+            background-image: url("{{asset('/images/cropped-mountain-range-sunset-landscape-cloudy-sky-mountain-peaks-3840x2160-4620(1).jpg')}}");
+        }
+        @elseif(request()->is('weather'))
+            body{
+            background-color: #f0f4f8; /* Soft bluish-white */
+            /*background-color: #f8fbff; !* Very light icy blue *!*/
+            /*background-color: #e6f0ff; !* Cooler, wintry tone *!*/
+            /*background-color: #edf2f7; !* Subtle gray/blue undertone *!*/
+        }
+        @endif
+    </style>
 </head>
 <body>
 
@@ -20,7 +35,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-@yield('scripts')
+@stack('scripts')
+
 
 </body>
 </html>

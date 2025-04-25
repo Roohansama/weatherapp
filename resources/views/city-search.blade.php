@@ -1,21 +1,21 @@
-<div class="d-flex align-items-center">
-    <form action="{{route('weather-search')}}" method="post">
+<div class="d-flex align-items-center justify-content-center">
+    <form action="{{route('weather-search')}}" method="post" id="city-form">
         @csrf
-            <select name="city" id="city-dropdown" style="width: 300px; border-radius: 23px">
+            <select class="" name="city" id="city-dropdown" style="width: 400px; border-radius: 23px !important">
 
             </select>
-            <button type="submit" class="btn btn-sm btn-success m-0">
-                Search
-            </button>
+{{--            <button type="submit" class="btn btn-sm btn-success m-0">--}}
+{{--                Search--}}
+{{--            </button>--}}
 
     </form>
 </div>
 
-@section('scripts')
+@push('scripts')
 <script>
     $(document).ready(function (){
         $('#city-dropdown').select2({
-            placeholder: 'Type to search for a city...',
+            placeholder: 'Search your City...',
             ajax: {
                 url: "{{route('city-search')}}",
                 dataType: 'json',
@@ -29,8 +29,12 @@
 
                 cache: false
             },
-            minimumInputLength: 2
+            minimumInputLength: 2,
+            width: 'resolve',
         });
     });
+    $('#city-dropdown').on('select2:select', function (e) {
+        document.getElementById('city-form').submit();
+    });
 </script>
-@endsection
+@endpush
