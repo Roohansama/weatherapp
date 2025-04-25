@@ -2,16 +2,16 @@
 @section('content')
 
 <!-- Main Content -->
-<main class="container">
+<main class="container" style="min-height: 88vh">
 
-@include('city-search')
+    <div class="p-5">
+        @include('city-search')
+    </div>
     <!-- Current Weather -->
     <section class="row mb-3">
-        <div class="col-6 my-5">
-            @if(isset($weather_data))
-            <div class="card text-white">
+        @if(isset($weather_data))
+        <div class="card text-dark col col-6 my-5">
                 <div class="card-body">
-
                     <h2 class="card-text h6 ">{{ strtoupper($weather_data['city'] . ' ,' . $weather_data['sys']['country']) }}</h2>
                     <h2 class="card-title fw-bold">{{ round($weather_data['main']['temp']) }}°C</h2>
                     <p class="card-text ">Feels like {{ round($weather_data['main']['feels_like']) }}°C. {{$weather_data['weather'][0]['description']}}</p>
@@ -26,10 +26,11 @@
                         <li>Visibility: {{ Number::abbreviate($weather_data['visibility']) }}m</li>
                     </ul>
                 </div>
-            </div>
-            @endif
         </div>
-        @include('weather-map')
+        @endif
+        <div class="col col-6 align-content-center">
+            @include('weather-map')
+        </div>
     </section>
 
 </main>
