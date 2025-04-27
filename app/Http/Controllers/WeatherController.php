@@ -11,8 +11,8 @@ class WeatherController extends Controller
     public $city;
     public function getWeather(Request $request){
         try{
-            $geocode = $this->getGeoCoordinates($request->city);
 
+            $geocode = $this->getGeoCoordinates($request->city);
 
             $aqi = $this->getAirPollutionData($geocode);
 
@@ -37,7 +37,8 @@ class WeatherController extends Controller
             return response()->json(['error' => 'City not found'], 404);
 
         }catch (\Exception $e){
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+            toastr()->error($e->getMessage());
+            return redirect()->back();
         }
 
     }
@@ -70,6 +71,7 @@ class WeatherController extends Controller
             return response()->json(['error' => 'City not found'], 404);
 
         }catch (\Exception $e){
+            toastr()->error($e->getMessage());
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
 
@@ -84,6 +86,7 @@ class WeatherController extends Controller
             ])->json();
 
         }catch (\Exception $e){
+            toastr()->error($e->getMessage());
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
