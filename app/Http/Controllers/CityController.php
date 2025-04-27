@@ -16,6 +16,7 @@ class CityController extends Controller
             return json_decode($json,true);
 
         }catch(\Exception $e){
+            toastr()->error($e->getMessage());
             return redirect()->to('/')->with('error', $e->getMessage());
         }
     }
@@ -41,6 +42,7 @@ class CityController extends Controller
 
 
         }catch(\Exception $e){
+            toastr()->error($e->getMessage());
             return redirect()->to('/')->with('error', $e->getMessage());
         }
     }

@@ -9,6 +9,7 @@ use App\Http\Controllers\WeatherController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+
 //route for ajax
 Route::get('/city-search', [CityController::class, 'searchCities'])->name('city-search');
 

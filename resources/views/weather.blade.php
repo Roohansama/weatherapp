@@ -9,7 +9,7 @@
     </div>
     <!-- Current Weather -->
     <section class="row mb-3">
-        @if(isset($weather_data))
+        @if($weather_data)
         <div class="card text-dark col col-6 my-5">
                 <div class="card-body">
                     <h2 class="card-text h6 ">{{ strtoupper($weather_data['city'] . ' ,' . $weather_data['sys']['country']) }}</h2>
