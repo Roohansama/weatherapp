@@ -14,6 +14,14 @@ class WeatherController extends Controller
 
             $geocode = $this->getGeoCoordinates($request->city);
 
+            // Check if geocode returned valid data
+            if (empty($geocode) || !isset($geocode['latitude']) || !isset($geocode['longitude'])) {
+                // Log the error or handle it gracefully
+                toastr()->error('Geocoding response is incorrect');
+                // You can either redirect with an error message or return a JSON response if it's an API
+                return redirect()->back();
+            }
+
             $aqi = $this->getAirPollutionData($geocode);
 
             $response = Http::get('https://api.openweathermap.org/data/2.5/weather', [
@@ -58,7 +66,9 @@ class WeatherController extends Controller
 
             $data = $response->json();
 
+
             if (!empty($data)) {
+
                 $lat = $data[0]['lat'];
                 $lon = $data[0]['lon'];
 
@@ -68,11 +78,9 @@ class WeatherController extends Controller
                 ];
             }
 
-            return response()->json(['error' => 'City not found'], 404);
-
         }catch (\Exception $e){
             toastr()->error($e->getMessage());
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+            return redirect()->back();
         }
 
     }

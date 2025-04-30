@@ -15,7 +15,7 @@
 <script>
     $(document).ready(function (){
         $('#city-dropdown').select2({
-            placeholder: 'Search your City...',
+            placeholder: 'Select a city',
             ajax: {
                 url: "{{route('city-search')}}",
                 dataType: 'json',
@@ -30,7 +30,6 @@
                 cache: false
             },
             minimumInputLength: 2,
-            width: 'resolve',
         });
     });
     $('#city-dropdown').on('select2:select', function (e) {
