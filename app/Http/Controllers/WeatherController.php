@@ -19,7 +19,7 @@ class WeatherController extends Controller
                 // Log the error or handle it gracefully
                 toastr()->error('Geocoding response is incorrect');
                 // You can either redirect with an error message or return a JSON response if it's an API
-                return redirect()->back();
+                return redirect()->back()->withInput(); // Laravel already flashes input by default
             }
 
             $aqi = $this->getAirPollutionData($geocode);
@@ -46,7 +46,8 @@ class WeatherController extends Controller
 
         }catch (\Exception $e){
             toastr()->error($e->getMessage());
-            return redirect()->back();
+            return redirect()->back()->withInput(); // Laravel already flashes input by default
+
         }
 
     }
@@ -80,7 +81,8 @@ class WeatherController extends Controller
 
         }catch (\Exception $e){
             toastr()->error($e->getMessage());
-            return redirect()->back();
+            return redirect()->back()->withInput(); // Laravel already flashes input by default
+
         }
 
     }
@@ -95,7 +97,7 @@ class WeatherController extends Controller
 
         }catch (\Exception $e){
             toastr()->error($e->getMessage());
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+            return redirect()->back()->withInput(); // Laravel already flashes input by default
         }
     }
 }

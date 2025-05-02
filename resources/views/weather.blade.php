@@ -33,7 +33,7 @@
                                 Wind:
                             </p
                             ><p class="fw-bold" style="width: fit-content; margin: 0">
-                                {{$weather_data['wind']['speed']}} {{ wind_direction($weather_data['wind']['deg']) }}
+                                {{$weather_data['wind']['speed']}}m/s | {{ wind_direction($weather_data['wind']['deg']) }}
                             </p>
                         </li>
                         <hr>
